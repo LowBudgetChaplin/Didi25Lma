@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<title>La mulți ani pisoiu!</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap">
+<style>
+/* Layout: notice on top, big greeting, gray cat left, black cat right, puzzle panel in the middle */
+:root{
+  --bg:#f4effc; --panel:#ffffff; --ink:#2a2140; --muted:#6c6285; --accent:#e8478b; --accent-ink:#ffffff; --sun:#ffc93c; --line:#ddd2f0; --bubble:#fff6d6; --err:#c2253f; --note:#e9f6ee; --note-ink:#17543a;
+  --display:'Baloo 2','Trebuchet MS',system-ui,sans-serif; --body:'Nunito',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1730;--panel:#2a2347;--ink:#f3edff;--muted:#b3a8d1;--accent:#ff6fa8;--accent-ink:#2a1030;--sun:#ffd25e;--line:#42396a;--bubble:#3b3260;--err:#ff8da1;--note:#1f3a30;--note-ink:#b8f0d3;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1730;--panel:#2a2347;--ink:#f3edff;--muted:#b3a8d1;--accent:#ff6fa8;--accent-ink:#2a1030;--sun:#ffd25e;--line:#42396a;--bubble:#3b3260;--err:#ff8da1;--note:#1f3a30;--note-ink:#b8f0d3;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:980px;margin:0 auto}
+.notice{background:var(--note);color:var(--note-ink);border-radius:14px;padding:12px 16px;margin:0 auto 14px;max-width:760px;font-weight:700;text-align:center}
+.notice span{display:inline-block;margin:2px 8px;white-space:nowrap}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,9vw,5.4rem);line-height:1;margin:6px 0 18px;text-align:center;text-wrap:balance;color:var(--accent);letter-spacing:-.01em}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"l c r";gap:20px;align-items:start}
+.cat{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+.cat.l{grid-area:l}.cat.r{grid-area:r}
+.cat .pic{width:100%;max-width:220px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--panel);border:3px solid var(--line);display:flex;align-items:center;justify-content:center}
+.cat .pic img,.cat .pic svg{width:100%;height:100%;object-fit:cover;display:block}
+.bubble{position:relative;background:var(--bubble);border:2px solid var(--line);border-radius:18px;padding:10px 14px;font-family:var(--display);font-weight:600;line-height:1.2;text-align:center;order:-1;max-width:100%;overflow-wrap:anywhere}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-11px;width:18px;height:18px;background:var(--bubble);border-right:2px solid var(--line);border-bottom:2px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.panel{grid-area:c;background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:22px;min-width:0}
+.weather{background:var(--bubble);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.weather .small{font-family:var(--display);font-weight:600;color:var(--muted);font-size:.95rem}
+.puzzle{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,4.4vw,1.9rem);line-height:1.15;margin:4px 0 0;text-wrap:balance}
+.puzzle u{text-decoration-color:var(--accent);text-decoration-thickness:4px;text-underline-offset:5px}
+.msg{margin:0 0 14px;min-width:0;overflow-wrap:anywhere}
+.msg a,.link{color:var(--accent);font-weight:700}
+.fb{min-height:1.6em;margin:10px 0 0;font-weight:700;color:var(--err)}
+.fb.good{color:var(--ink)}
+form{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+input[type=text]{flex:1 1 160px;min-width:0;font:inherit;font-size:1.1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+input[type=text]:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font:inherit;font-family:var(--display);font-weight:800;font-size:1.1rem;padding:12px 22px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;max-width:100%;text-wrap:balance}
+button.alt{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.block{margin-top:16px;padding-top:14px;border-top:2px dashed var(--line)}
+.coords{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,5vw,1.8rem);margin:6px 0 12px;overflow-wrap:anywhere}
+.sema{margin:14px 0 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.sema .frame{width:min(220px,70%);aspect-ratio:1;border:8px solid #d9342b;outline:5px solid #ffc700;outline-offset:-1px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sema img{width:100%;height:100%;object-fit:contain;display:block}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--accent)}
+.hl{background:var(--sun);color:#2a2140;padding:0 .25em;border-radius:.25em}
+.confetti{font-size:2.4rem;text-align:center}
+.clock{display:flex;flex-direction:column;align-items:center;gap:4px;margin:10px 0}
+.clock svg{width:140px;height:140px}
+.steps{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:10px}
+.steps li{background:var(--bubble);border-radius:12px;padding:10px 14px;overflow-wrap:anywhere}
+.steps b{font-family:var(--display)}
+@media (max-width:640px){
+  .stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"l r" "c c";gap:14px}
+  .panel{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<main>
+  <div class="notice"><div>Înainte să începi, verifică:</div><span>🔋 baterie încărcată</span><span>📍 locația pornită</span><span>🌐 internet activ</span><span>🔊 sunetul la maxim</span></div>
+  <h1>La mulți ani!</h1>
+  <div class="stage">
+    <div class="cat l">
+      <div class="bubble" id="bubL">la mulți ani</div>
+      <div class="pic" id="picL"></div>
+    </div>
+    <section class="panel" id="panel" aria-live="polite"></section>
+    <div class="cat r">
+      <div class="bubble" id="bubR">MEOW MANCARE, MEOW MANCARE</div>
+      <div class="pic" id="picR"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  // ---------- config ----------
+  var HINT_DELAY_MS=5000;            // test value; set to 15*60*1000 for the real day
+  var TARGET={lat:44+41/60+45.2/3600,lon:25+30/60+5.5/3600}; // 44°41'45.2"N 25°30'05.5"E
+  var RADIUS_M=1500;                 // generous, GPS in open fields drifts
+
+  // ---------- cat photos ----------
+  function catSvg(fill){
+    return '<svg viewBox="0 0 100 100" role="img" aria-label="pisică"><rect width="100" height="100" fill="#cdbfe8"/>'
+      +'<polygon points="22,40 26,12 44,28" fill="'+fill+'"/><polygon points="78,40 74,12 56,28" fill="'+fill+'"/>'
+      +'<ellipse cx="50" cy="58" rx="32" ry="30" fill="'+fill+'"/><ellipse cx="38" cy="54" rx="5" ry="7" fill="#ffe066"/><ellipse cx="62" cy="54" rx="5" ry="7" fill="#ffe066"/>'
+      +'<polygon points="46,66 54,66 50,71" fill="#ff8fb3"/></svg>';
+  }
+  function mountCat(id,src,fill,pos){
+    var el=document.getElementById(id),img=new Image();img.alt="pisica";img.style.objectPosition=pos;
+    img.onload=function(){el.innerHTML="";el.appendChild(img)};
+    img.onerror=function(){el.innerHTML=catSvg(fill)};
+    el.innerHTML=catSvg(fill);img.src=src;
+  }
+  mountCat('picL','pisica-gri.jpg','#9a9aa6','50% 28%');
+  mountCat('picR','pisica-neagra.jpg','#1d1a24','78% 72%');
+
+  var bubL=document.getElementById('bubL'),bubR=document.getElementById('bubR');
+  var R_DEFAULT='MEOW MANCARE, MEOW MANCARE',bubTimer=null;
+  function bubbleRTemp(txt,ms){bubR.textContent=txt;clearTimeout(bubTimer);bubTimer=setTimeout(function(){bubR.textContent=R_DEFAULT},ms)}
+
+  // ---------- helpers ----------
+  function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'')}
+  function lev(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++){d[i]=[i]}for(j=0;j<=n;j++){d[0][j]=j}
+    for(i=1;i<=m;i++)for(j=1;j<=n;j++){d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1))}return d[m][n]}
+  function near(v,targets){for(var k=0;k<targets.length;k++){var w=norm(targets[k]);if(w.length>=4&&lev(v,w)<=1+(w.length>=6?1:0)+(w.length>=12?1:0))return true}return false}
+  function judge(input,accepted,nearTargets){
+    var v=norm(input);if(!v)return 'bad';
+    for(var i=0;i<accepted.length;i++){if(v===norm(accepted[i]))return 'ok'}
+    return near(v,nearTargets||accepted)?'near':'bad';
+  }
+  function rnd(list,last){var x;do{x=list[Math.floor(Math.random()*list.length)]}while(list.length>1&&x===last);return x}
+
+  // ---------- sounds ----------
+  var ctx;
+  function ac(){try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch(e){return null}}
+  function tone(f,t0,dur,type,vol,f2){var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,c.currentTime+t0);
+    if(f2)o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+t0+dur);
+    g.gain.setValueAtTime(vol||.15,c.currentTime+t0);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t0+dur);o.connect(g);g.connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+dur+.02)}
+  function sWrong(){tone(220,0,.22,'sawtooth',.14,150);tone(150,.2,.38,'sawtooth',.14,90)}
+  function sGood(){[523,659,784,1047].forEach(function(f,i){tone(f,i*.09,.25,'triangle',.14)})}
+  function sCoin(){tone(988,0,.09,'square',.08);tone(1319,.09,.4,'square',.08)}
+  var chopperAudio=null;
+  function playChopper(){try{chopperAudio=chopperAudio||new Audio('chopper.mp3');chopperAudio.currentTime=0;chopperAudio.volume=1;var p=chopperAudio.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
+
+  // ---------- ui plumbing ----------
+  var panel=document.getElementById('panel');
+  var last='',timers=[],intervals=[];
+  function later(fn,ms){var t=setTimeout(fn,ms);timers.push(t);return t}
+  function every(fn,ms){var t=setInterval(fn,ms);intervals.push(t);return t}
+  function reset(){timers.forEach(clearTimeout);intervals.forEach(clearInterval);timers=[];intervals=[]}
+  function form(ph,id){id=id||'f';return '<form id="'+id+'" autocomplete="off"><input type="text" id="'+id+'a" placeholder="'+ph+'" aria-label="Răspuns" autocapitalize="off" autocorrect="off" spellcheck="false"><button type="submit">Trimite</button></form><p class="fb" id="'+id+'fb"></p>'}
+  function fb(txt,id){var e=document.getElementById((id||'f')+'fb');if(e)e.textContent=txt}
+  function bind(handler,id){id=id||'f';var f=document.getElementById(id);if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();ac();var i=document.getElementById(id+'a');handler(i.value);i.select()})}
+  function wrong(list,id){sWrong();last=rnd(list,last);fb(last,id)}
+
+  var NEAR="Ești pe aproape, dar pare că ți-a fost foame.";
+
+  // ---------- step 1: latte ----------
+  var WRONG1=["Hmm, nu cred că asta e.","Pisicile clatină din cap. Mai încearcă.","Încă nu. Gândește-te la dimineața ta.","Uite ce vreme frumoasă, ai timp să mai încerci.","Aproape deloc. Mai gândește-te."];
+  function show1(){
+    reset();
+    panel.innerHTML='<div class="weather"><div class="small">Uite ce vreme frumoasă</div><p class="puzzle">Nu este <u>târziu</u> pentru <u>cafea</u></p></div>'+form('Scrie răspunsul aici');
+    bind(function(v){
+      var r=judge(v,['latte','5togo','5 to go','cincitogo'],['latte','5togo']);
+      if(r==='ok'){sGood();show2(norm(v)==='latte'?'A':'B')}
+      else if(r==='near'){sWrong();fb(NEAR)}
+      else wrong(WRONG1);
+    });
+  }
+
+  // ---------- step 2: price ----------
+  var PRICES_B=['10','12','13','17','7','15','11'];
+  function show2(variant){
+    reset();
+    var intro=variant==='A'
+      ? 'Știu eu o locație aproape dacă vrei un latte. Dar sincer să îți zic, nu mai știu cât costă de când cu inflația asta. Poate îmi zici tu dacă dai o tură: <a href="https://share.google/pfGdd72UsKgt89QfE" target="_blank" rel="noopener">hartă</a>'
+      : 'Mda, eu nu mă gândeam chiar așa, dar dacă vrei tu, hai la 5ToGo. Cred că știi deja locația. Ai stricat surpriza :( Cel puțin zi-mi cât costă o cafea pe acolo, că poate ai chef să dai o tură să iei și tu una.';
+    panel.innerHTML='<p class="msg">'+intro+'</p>'+form('Câți lei?');
+    bind(function(v){
+      var n=norm(v).replace(/lei$|ron$/,'');
+      var ok=variant==='A'?n==='10':PRICES_B.indexOf(n)>=0;
+      if(ok){sGood();panel.innerHTML='<p class="puzzle">Cât eee? Ceaușescule...</p>';later(show3,5000)}
+      else wrong(["Nu cred că atât costă. Uită-te mai bine.","Mai verifică prețul, inflația nu iartă.","Hmm, nu e suma corectă."]);
+    });
+  }
+
+  // ---------- step 3: walk + car ----------
+  var NO3=["Răspuns greșit. Ce te crezi aici? De ziua ta? Deci da sau nu?","Mai bagă o fisă și încearcă din nou. Da sau nu?","Nu se acceptă «nu». Încearcă iar.","Pisicile au votat deja: da. Tu?","Hai, nu mă lăsa singur pe drum. Da sau nu?"];
+  var wrongNo=0;
+  function show3(){
+    reset();wrongNo=0;
+    panel.innerHTML='<p class="puzzle">Dacă tot am ieșit pe afară, nu facem și noi o plimbare?</p>'+form('da sau nu');
+    bind(function(v){
+      var n=norm(v);
+      if(['da','daa','daaa','sigur','desigur','bineinteles'].indexOf(n)>=0){sGood();show3b()}
+      else if(n==='nu'||n==='nuu'){
+        sWrong();later(sCoin,380);
+        last=wrongNo===0?NO3[0]:rnd(NO3.slice(1),last);wrongNo++;fb(last)}
+      else{sWrong();fb('Da sau nu. Nu e un test de cultură generală.')}
+    });
+  }
+  function show3b(){
+    reset();
+    panel.innerHTML='<p class="puzzle">Super, păi atunci hai că ne vom deplasa mai rapid cu ce de regulă <b>noi</b> pierdem timpul la <b id="semWord">semafor</b></p><div id="extra"></div><div id="extra2"></div>'+form('Răspunsul tău');
+    bind(function(v){
+      var r=judge(v,['kuga','ford kuga','fordkuga'],['kuga']),n=norm(v);
+      if(r==='ok'){sGood();show4()}
+      else if(r==='near'){sWrong();fb(NEAR)}
+      else if(['ford','fordul'].indexOf(n)>=0){sGood();showHint();showFord()}
+      else if(['masina','masinuta','auto','automobil','masinamea'].indexOf(n)>=0){sGood();showHint()}
+      else wrong(["Nu, nu e asta. Gândește-te la semafor.","Mai încearcă. Ce stă la semafor?"]);
+    });
+  }
+  var SEMA=['k.png','u.png','g.png','a.png'];
+  function showHint(){
+    if(document.getElementById('hint'))return;
+    document.getElementById('extra').innerHTML='<p class="msg" style="margin-top:14px"><b>Ok: încearcă un răspuns mai specific pentru a continua.</b> Da, ai dreptate, dar pentru un bonus care, crede-mă, merită, trebuie să fii mai specifică. Uite un hint:</p>'
+      +'<div class="sema" id="hint"><div class="frame"><img id="si" src="'+SEMA[0]+'" alt="semnal de semafor"></div><div class="dots" id="sd"><i class="on"></i><i></i><i></i><i></i></div></div>';
+    var i=0;
+    every(function(){i=(i+1)%SEMA.length;var im=document.getElementById('si');if(im)im.src=SEMA[i];
+      var d=document.querySelectorAll('#sd i');for(var k=0;k<d.length;k++){d[k].className=k===i?'on':''}},1600);
+    fb('');
+  }
+
+  function showFord(){
+    var e=document.getElementById('extra2');if(!e||e.innerHTML)return;
+    e.innerHTML='<p class="msg" style="margin-top:12px"><b>Ok, ești aproape, dar pentru că ai un hint în plus:</b> este o codificare de tipul cuvântului evidențiat.</p>';
+    var w=document.getElementById('semWord');if(w)w.className='hl';
+  }
+
+  // ---------- step 4: papers, then "where to?" ----------
+  var PAWS=['paws','pawz','pos','poz'],GOLD=['golden','retriever','goldenretriever'];
+  function classify(v){
+    var n=norm(v);if(!n)return 'bad';
+    if(PAWS.indexOf(n)>=0)return n==='pawz'?'pawz':'paws';
+    if(GOLD.indexOf(n)>=0)return 'golden';
+    if(near(n,GOLD))return 'golden';
+    if(near(n,['paws','pawz']))return 'near';
+    return 'bad';
+  }
+  function show4(){
+    reset();
+    panel.innerHTML='<p class="msg"><b>Ok, hai să vedem dacă avem toate actele mașinii, prima dată măcar atâta lucru, că mașina... abia mai duce.</b></p>'
+      +'<p class="puzzle">Și acum că e clar că am verificat că mașina sărăcuță merge și are actele în regulă... încotro?</p>'
+      +'<p class="msg" style="margin-top:12px">Locația: <a href="https://share.google/zRiiG95XjGqCkkacw" target="_blank" rel="noopener">hartă</a>. Răspunsul de pe vinil îl scrii aici:</p>'+form('Răspunsul de pe vinil');
+    bind(function(v){
+      var c=classify(v);
+      if(c==='near'){sWrong();fb(NEAR)}
+      else if(c==='bad')wrong(["Citește poezia mai atent.","Nu e asta. Mai încearcă.","Pronunțarea e cheia. Mai încearcă."]);
+      else{sGood();
+        var html='';
+        if(c!=='pawz')html+='<p class="msg"><b>Da, e corect</b>, doar diferă puțin numele.</p>';
+        if(c==='golden')html+='<p class="msg"><b>Opa? Vrei la cățelusi? Am plecaaaat!</b></p>';
+        panel.innerHTML=html+'<p class="puzzle" style="text-align:center">Let’s change the Wasteland into the Golden Retriever land</p>';
+        later(show5,c==='golden'?6000:5000);
+      }
+    });
+  }
+
+  // ---------- step 5: elefant zoo park, hint button, coordinates ----------
+  var hintShown=false,wrongHint=0,homoCount=0,renShown=false;
+  function show5(){
+    reset();hintShown=false;wrongHint=0;homoCount=0;renShown=false;
+    panel.innerHTML='<p class="msg">Ai primit o pungă. Mănâncă din ea și caută bilețelul cu puzzle. Scrie soluția:</p>'+form('Soluția puzzle-ului')+'<div id="hintArea"></div>';
+    bind(function(v){
+      var r=judge(v,['elefant zoo park','elefantzoopark','zoo park','elefant'],['elefantzoopark','elefant']);
+      if(r==='ok'){sGood();showCoords()}
+      else if(r==='near'){sWrong();fb(NEAR)}
+      else wrong(["Mai citește o dată bilețelul.","Nu e soluția. Mai încearcă.","Răspunsul are legătură cu ce urmează să vezi."]);
+    });
+    later(function(){
+      var a=document.getElementById('hintArea');if(!a)return;
+      a.innerHTML='<div class="block"><button type="button" class="alt" id="hintBtn">Ajutor</button></div>';
+      document.getElementById('hintBtn').addEventListener('click',openHint);
+    },HINT_DELAY_MS);
+  }
+  function openHint(){
+    var a=document.getElementById('hintArea');if(!a||hintShown)return;hintShown=true;
+    a.innerHTML='<div class="block"><p class="msg"><b>Am un prieten care te-ar putea ajuta, cu care te asemeni, și e un medic aproape la fel de bun ca tine. Poți ghici cine e?</b></p>'+form('Numele prietenului','h')+'<div id="ren"></div></div>';
+    bind(function(v){
+      var n=norm(v);
+      if(n==='chopper'||n==='choper'||near(n,['chopper'])){sGood();playChopper();fb('Chopper! 🦌 Ascultă...','h')}
+      else if(['homofusan','mofusan','homofuzan','mofuzan'].indexOf(n)>=0){
+        homoCount++;sWrong();
+        if(homoCount===1)fb('Eu cred că Homofusan vrea să fie atent la drum, dar vezi, poate ascunde el un răspuns la spate.','h');
+        else{fb('Eu cred că Ticu nu știe ce vorbește. Caută alt prieten să te ajute și ține minte că e un medic mic și deștept, așa ca tine.','h');showRen()}
+      }else{sWrong();wrongHint++;fb('Nu e el. Mai încearcă.','h');if(wrongHint>=2)showRen()}
+    },'h');
+  }
+  function showRen(){if(renShown)return;renShown=true;var r=document.getElementById('ren');if(r)r.innerHTML='<p class="msg" style="margin-top:10px">Indiciu: <b>Ren</b></p>'}
+
+  var clicks=[],geoPending=false,fallbackShown=false;
+  function showCoords(){
+    reset();clicks=[];geoPending=false;fallbackShown=false;
+    panel.innerHTML='<p class="msg">Corect! Coordonatele:</p><p class="coords">44°41\'45.2"N 25°30\'05.5"E</p>'
+      +'<p class="msg"><a class="link" target="_blank" rel="noopener" href="https://www.google.com/maps?q='+TARGET.lat.toFixed(6)+','+TARGET.lon.toFixed(6)+'">Deschide în hartă</a></p>'
+      +'<button type="button" id="arrived">Ai ajuns la destinație?</button><p class="fb" id="gfb"></p><div id="fallback"></div>';
+    document.getElementById('arrived').addEventListener('click',onArrived);
+  }
+  function dist(a,b,c,d){var R=6371000,r=Math.PI/180,dl=(c-a)*r,dg=(d-b)*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dg/2)*Math.sin(dg/2);return 2*R*Math.asin(Math.sqrt(x))}
+  function gfb(t){var e=document.getElementById('gfb');if(e)e.textContent=t}
+  function onArrived(){
+    ac();var now=Date.now();clicks.push(now);clicks=clicks.filter(function(t){return now-t<=10000});
+    if(clicks.length>=5)showFallback();
+    if(geoPending)return;
+    if(!navigator.geolocation){gfb('Telefonul nu îmi dă locația. Pornește locația sau folosește varianta de rezervă.');showFallback();return}
+    geoPending=true;gfb('Mă uit unde ești...');
+    navigator.geolocation.getCurrentPosition(function(p){
+      geoPending=false;
+      var d=dist(p.coords.latitude,p.coords.longitude,TARGET.lat,TARGET.lon);
+      if(d<=RADIUS_M+Math.min(p.coords.accuracy||0,1000)){sGood();gfb('Da, ești aici!');later(show6,1500)}
+      else{sWrong();gfb('Încă nu ești în zona parcului. Mai ai de mers: aproximativ '+(d>=1000?(d/1000).toFixed(1)+' km':Math.round(d/50)*50+' m')+'.')}
+    },function(){
+      geoPending=false;sWrong();gfb('Nu pot citi locația. Pornește locația și permite accesul, apoi încearcă iar.');showFallback();
+    },{enableHighAccuracy:true,timeout:9000,maximumAge:20000});
+  }
+  var PRICE_WRONG=["Mai încearcă, e un preț rotund.","Nu e atât. Mai încearcă diferit.","Hmm, nu cred. Gândește-te la o porție.","Încă nu. Încearcă alt număr."];
+  function showFallback(){
+    if(fallbackShown)return;fallbackShown=true;
+    var f=document.getElementById('fallback');if(!f)return;
+    f.innerHTML='<div class="block"><p class="msg">Hm, probabil nu e foarte bun semnalul pentru locație aici :/ Dar totuși, dacă tot ai ajuns până acolo, Chopper e curios cât de scump e de hrănit un elefant pe la voi.</p><button type="button" class="alt" id="fbBtn">Îmi pare rău dacă nu ești localizat bine, dar dacă tot mergi până acolo, sunt curios cât de scump este să hrănești un elefant la cât de mare e.</button><div id="fbForm"></div></div>';
+    document.getElementById('fbBtn').addEventListener('click',function(){
+      var w=document.getElementById('fbForm');if(w.innerHTML)return;
+      w.innerHTML=form('Lei pe porție','p');
+      bind(function(v){var n=norm(v).replace(/lei$|ron$/,'');
+        if(n==='20'||n==='40'){sGood();show6()}else wrong(PRICE_WRONG,'p')},'p');
+    });
+  }
+
+  // ---------- step 6: get dressed ----------
+  var readyClicks=0;
+  function show6(){
+    reset();readyClicks=0;
+    panel.innerHTML='<p class="msg">Sper că ți-au plăcut toți pămpurei de azi. Urmează o mică locație care din păcate nu există și ar cam trebui să îți pui skillurile de orientare la punct. Te rog să îți iei o îmbrăcăminte mai smart casual ca să intri în temă și recomand să ai și o geană cu tine ca să fie outfitul complet.</p>'
+      +'<p class="puzzle">La 16:30 – 17:00 e musai să fii gata, te rog.</p>'
+      +'<p class="msg" style="margin-top:12px">Când te-ai schimbat, apasă aici pentru indicații. Poate găsim locația inexistentă împreună, sau poate o inventăm noi, cine știe.</p>'
+      +'<button type="button" id="ready">Sunt gata</button><p class="fb" id="rfb"></p>';
+    var btn=document.getElementById('ready');
+    btn.addEventListener('click',function(){
+      ac();readyClicks++;var e=document.getElementById('rfb');
+      if(readyClicks===1){sWrong();e.textContent='Bună încercare, spune-mi când ești gata pe bune.'}
+      else if(readyClicks===2){sWrong();e.textContent='Tot nu văd să fii gata... stai mai aproape de cameră.'}
+      else{sGood();e.className='fb';panel.innerHTML='<p class="puzzle">Ok, acum văd. Te-ai pregătit foarte frumos!</p><p class="msg" style="margin-top:10px">Bun, deci hai să începem:</p>';later(showSteps,3000)}
+    });
+  }
+
+  // ---------- step 7: the nonexistent place ----------
+  var STEPS=[
+    'Caută Str. Franceză nr. 38–42, cred?',
+    'Localizează Concorde Old Bucharest Hotel.',
+    'Intră pe ușile așa zise mari, așa zise din sticlă, și treci pe holul de așa zisă recepție.',
+    'Caută un tablou cu ramă cu un ticu bastan.',
+    'Pune mâna pe tablou, trage aer în piept și împinge ca BOOONG-ul lui Miner în ușă.',
+    'Dacă nu cumva n-ai crezut în ce ți-am explicat aici, să știi că ai descoperit o locație inexistentă și aici vei găsi în scurt timp comoara zilei, dacă nu l-ai pierdut și pe Serban pe drum pe undeva.'
+  ];
+  var shown=0;
+  function clockSvg(){
+    var s='<svg viewBox="0 0 100 100" role="img" aria-label="ceas"><circle cx="50" cy="50" r="46" fill="var(--panel)" stroke="var(--accent)" stroke-width="4"/>';
+    for(var i=0;i<12;i++){var a=i*Math.PI/6,x1=50+38*Math.sin(a),y1=50-38*Math.cos(a),x2=50+43*Math.sin(a),y2=50-43*Math.cos(a);s+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="var(--ink)" stroke-width="2"/>'}
+    s+='<line id="hh" x1="50" y1="50" x2="50" y2="28" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><line id="mh" x1="50" y1="50" x2="50" y2="16" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><line id="sh" x1="50" y1="56" x2="50" y2="12" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="var(--accent)"/></svg>';
+    return s;
+  }
+  function tick(){var d=new Date(),h=(d.getHours()%12)+d.getMinutes()/60,m=d.getMinutes()+d.getSeconds()/60,s=d.getSeconds();
+    [['hh',h*30],['mh',m*6],['sh',s*6]].forEach(function(p){var e=document.getElementById(p[0]);if(e)e.setAttribute('transform','rotate('+p[1]+' 50 50)')})}
+  function showSteps(){
+    reset();shown=0;
+    panel.innerHTML='<p class="msg">Avem timp până la 19:00 să găsim o locație inexistentă, dar dacă o găsim mai devreme va trebui să așteptăm:</p>'
+      +'<div class="clock">'+clockSvg()+'<span class="small" style="color:var(--muted)">tic-tac, timpul trece</span></div>'
+      +'<ol class="steps" id="steps"></ol><div style="margin-top:14px"><button type="button" id="nextStep">Arată pasul 1</button></div>';
+    tick();every(tick,1000);
+    var btn=document.getElementById('nextStep');
+    btn.addEventListener('click',function(){
+      ac();
+      if(shown<STEPS.length){
+        var li=document.createElement('li');li.innerHTML='<b>Pasul '+(shown+1)+':</b> '+STEPS[shown];
+        document.getElementById('steps').appendChild(li);shown++;
+        if(shown===5)bubbleRTemp('NUU BONG MEOW MEOW MEOW',30000);
+        if(shown<STEPS.length)btn.textContent='Arată pasul '+(shown+1);
+        else btn.textContent='BRAVOOO PISOIUU!';
+      }else{sGood();showFinal()}
+    });
+  }
+  function showFinal(){
+    reset();clearTimeout(bubTimer);
+    bubL.textContent='la mulți ani!';bubR.textContent='la mulți ani!';R_DEFAULT='la mulți ani!';
+    panel.innerHTML='<div class="confetti">❤️❤️❤️</div><p class="puzzle" style="text-align:center;margin-top:8px">BRAVOOO PISOIUU!</p>'
+      +'<p class="msg" style="text-align:center;margin-top:12px">Te-ai descurcat foarte bine. Sper că măcar puțin te-ai simțit din nou ca un copil.<br><br><b>Te iubesc și la mulți ani din nou!</b></p><div id="afterFinal"></div>';
+    later(function(){
+      var a=document.getElementById('afterFinal');if(!a)return;
+      a.innerHTML='<div class="block" style="text-align:center"><button type="button" id="notYet">Din păcate pentru tine, ziua nu s-a terminat. Trebuie să închei această vârstă la înălțime.</button><p class="msg" id="nyMsg" style="margin-top:12px"></p></div>';
+      document.getElementById('notYet').addEventListener('click',function(){document.getElementById('nyMsg').textContent='[Aici urmează ultima etapă]'});
+    },5000);
+  }
+
+  show1();
+})();
+</script>
+
+</body></html>
