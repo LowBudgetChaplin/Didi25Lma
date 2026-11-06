@@ -249,9 +249,11 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
     reset();hintShown=false;wrongHint=0;homoCount=0;renShown=false;
     panel.innerHTML='<p class="puzzle">Poftă bună pisu!</p><p class="msg" style="margin-top:8px">Locația: <a href="'+LOC_LINK+'" target="_blank" rel="noopener">hartă</a></p>'+form('Soluția puzzle-ului')+'<div id="hintArea"></div>';
     bind(function(v){
-      var r=judge(v,['elefant zoo park','elefantzoopark','zoo park','elefant'],['elefantzoopark','elefant']);
-      if(r==='ok'){sGood();showCoords()}
-      else if(r==='near'){sWrong();fb(NEAR)}
+      var n=norm(v);
+      if(n==='elefantparkzoo'||n==='elefantzoopark'){sGood();showCoords()}
+      else if(['elefant','parkzoo','zoopark','elefantzoo','elefantpark'].indexOf(n)>=0){sWrong();fb('Nu-mi plac răspunsurile pe jumătate corecte :(')}
+      else if(n==='park'||n==='zoo'){sWrong();fb('Ești aproape, dar ai ratat vreo 2 chestii.')}
+      else if(near(n,['elefantparkzoo','elefantzoopark'])){sWrong();fb(NEAR)}
       else wrong(["Mai citește o dată bilețelul.","Nu e soluția. Mai încearcă.","Răspunsul are legătură cu ce urmează să vezi."]);
     });
     later(function(){
@@ -317,7 +319,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   var readyClicks=0;
   function show6(){
     reset();readyClicks=0;
-    panel.innerHTML='<p class="msg">Sper că ți-au plăcut toți pămpurei de azi. Urmează o mică locație care din păcate nu există și ar cam trebui să îți pui skillurile de orientare la punct. Te rog să îți iei o îmbrăcăminte mai smart casual ca să intri în temă și recomand să ai și o geană cu tine ca să fie outfitul complet.</p>'
+    panel.innerHTML='<p class="msg">Sper că ți-au plăcut toți pămpurei de azi. Urmează o mică locație care din păcate nu există și ar cam trebui să îți pui skillurile de orientare la punct. Te rog să îți iei o îmbrăcăminte smart casual ca să intri în temă și recomand să ai și o geantă cu tine ca să fie outfitul complet.</p>'
       +'<p class="puzzle">La 16:30 – 17:00 e musai să fii gata, te rog.</p>'
       +'<p class="msg" style="margin-top:12px">Când te-ai schimbat, apasă aici pentru indicații. Poate găsim locația inexistentă împreună, sau poate o inventăm noi, cine știe.</p>'
       +'<button type="button" id="ready">Sunt gata</button><p class="fb" id="rfb"></p>';
