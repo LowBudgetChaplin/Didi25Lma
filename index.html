@@ -79,7 +79,8 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 <script>
 (function(){
   // ---------- config ----------
-  var HINT_DELAY_MS=5000;            // test value; set to 15*60*1000 for the real day
+  var HINT_DELAY_MS=15*60*1000;      // help button appears after 15 minutes
+  var LOC_LINK='https://share.google/zRiiG95XjGqCkkacw';
   var TARGET={lat:44+41/60+45.2/3600,lon:25+30/60+5.5/3600}; // 44°41'45.2"N 25°30'05.5"E
   var RADIUS_M=1500;                 // generous, GPS in open fields drifts
 
@@ -225,19 +226,19 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   }
   function show4(){
     reset();
-    panel.innerHTML='<p class="msg"><b>Ok, hai să vedem dacă avem toate actele mașinii, prima dată măcar atâta lucru, că mașina... abia mai duce.</b></p>'
-      +'<p class="puzzle">Și acum că e clar că am verificat că mașina sărăcuță merge și are actele în regulă... încotro?</p>'
-      +'<p class="msg" style="margin-top:12px">Locația: <a href="https://share.google/zRiiG95XjGqCkkacw" target="_blank" rel="noopener">hartă</a>. Răspunsul de pe vinil îl scrii aici:</p>'+form('Răspunsul de pe vinil');
+    panel.innerHTML='<p class="puzzle">Ok, hai la Kuga atunci și... încotro mai departe?</p>'
+      +'<p class="msg" style="margin-top:12px">Scrie răspunsul de pe vinil:</p>'+form('Răspunsul de pe vinil');
     bind(function(v){
       var c=classify(v);
       if(c==='near'){sWrong();fb(NEAR)}
       else if(c==='bad')wrong(["Citește poezia mai atent.","Nu e asta. Mai încearcă.","Pronunțarea e cheia. Mai încearcă."]);
       else{sGood();
         var html='';
-        if(c!=='pawz')html+='<p class="msg"><b>Da, e corect</b>, doar diferă puțin numele.</p>';
+        if(c!=='pawz')html+='<p class="msg"><b>Da, e corect</b>, doar diferă puțin numele, dar mai simplu hai să îți dau o locație și te descurci tu: <a href="'+LOC_LINK+'" target="_blank" rel="noopener">hartă</a></p>';
+        else html+='<p class="msg"><b>Corect!</b> Hai să îți dau o locație: <a href="'+LOC_LINK+'" target="_blank" rel="noopener">hartă</a></p>';
         if(c==='golden')html+='<p class="msg"><b>Opa? Vrei la cățelusi? Am plecaaaat!</b></p>';
         panel.innerHTML=html+'<p class="puzzle" style="text-align:center">Let’s change the Wasteland into the Golden Retriever land</p>';
-        later(show5,c==='golden'?6000:5000);
+        later(show5,c==='golden'?9000:8000);
       }
     });
   }
@@ -246,7 +247,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   var hintShown=false,wrongHint=0,homoCount=0,renShown=false;
   function show5(){
     reset();hintShown=false;wrongHint=0;homoCount=0;renShown=false;
-    panel.innerHTML='<p class="msg">Ai primit o pungă. Mănâncă din ea și caută bilețelul cu puzzle. Scrie soluția:</p>'+form('Soluția puzzle-ului')+'<div id="hintArea"></div>';
+    panel.innerHTML='<p class="puzzle">Poftă bună pisu!</p><p class="msg" style="margin-top:8px">Locația: <a href="'+LOC_LINK+'" target="_blank" rel="noopener">hartă</a></p>'+form('Soluția puzzle-ului')+'<div id="hintArea"></div>';
     bind(function(v){
       var r=judge(v,['elefant zoo park','elefantzoopark','zoo park','elefant'],['elefantzoopark','elefant']);
       if(r==='ok'){sGood();showCoords()}
@@ -372,9 +373,8 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
       +'<p class="msg" style="text-align:center;margin-top:12px">Te-ai descurcat foarte bine. Sper că măcar puțin te-ai simțit din nou ca un copil.<br><br><b>Te iubesc și la mulți ani din nou!</b></p><div id="afterFinal"></div>';
     later(function(){
       var a=document.getElementById('afterFinal');if(!a)return;
-      a.innerHTML='<div class="block" style="text-align:center"><button type="button" id="notYet">Din păcate pentru tine, ziua nu s-a terminat. Trebuie să închei această vârstă la înălțime.</button><p class="msg" id="nyMsg" style="margin-top:12px"></p></div>';
-      document.getElementById('notYet').addEventListener('click',function(){document.getElementById('nyMsg').textContent='[Aici urmează ultima etapă]'});
-    },5000);
+      a.innerHTML='<div class="block"><div style="border:2px solid var(--accent);border-radius:14px;padding:14px 16px;text-align:center;font-weight:700">Din păcate pentru tine, ziua nu s-a terminat. Trebuie să închei această vârstă la înălțime.</div></div>';
+    },20000);
   }
 
   show1();
