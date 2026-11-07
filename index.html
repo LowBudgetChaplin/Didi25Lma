@@ -82,6 +82,8 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 <script>
 (function(){
   // ---------- config ----------
+  // Site stays locked until this moment. TEST value now; for the real day use '2026-11-08T06:00:00+02:00'
+  var UNLOCK_AT=Date.parse('2026-11-07T17:45:00+02:00');
   var HINT_DELAY_MS=60*1000;          // help button appears 1 minute after the elephant puzzle shows
   var LOC_LINK='https://share.google/zRiiG95XjGqCkkacw';
   var TARGET={lat:44+41/60+45.2/3600,lon:25+30/60+5.5/3600}; // 44°41'45.2"N 25°30'05.5"E
@@ -391,7 +393,12 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
     });
   }
 
-  show1();
+  function showLock(){
+    reset();
+    panel.innerHTML='<p class="puzzle" style="text-align:center">Scanează-l mâine dimineață între 8:00–8:45 și îți recomand mâine să te îmbraci casual.</p>';
+    every(function(){if(Date.now()>=UNLOCK_AT)show1()},1000);
+  }
+  if(Date.now()<UNLOCK_AT)showLock();else show1();
 })();
 </script>
 
