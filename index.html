@@ -79,7 +79,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 <script>
 (function(){
   // ---------- config ----------
-  var HINT_DELAY_MS=15*60*1000;      // help button appears after 15 minutes
+  var HINT_DELAY_MS=60*1000;          // help button appears 1 minute after the elephant puzzle shows
   var LOC_LINK='https://share.google/zRiiG95XjGqCkkacw';
   var TARGET={lat:44+41/60+45.2/3600,lon:25+30/60+5.5/3600}; // 44°41'45.2"N 25°30'05.5"E
   var RADIUS_M=1500;                 // generous, GPS in open fields drifts
@@ -145,7 +145,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   var WRONG1=["Hmm, nu cred că asta e.","Pisicile clatină din cap. Mai încearcă.","Încă nu. Gândește-te la dimineața ta.","Uite ce vreme frumoasă, ai timp să mai încerci.","Aproape deloc. Mai gândește-te."];
   function show1(){
     reset();
-    panel.innerHTML='<div class="weather"><div class="small">Uite ce vreme frumoasă</div><p class="puzzle">Nu este <u>târziu</u> pentru <u>cafea</u></p></div>'+form('Scrie răspunsul aici');
+    panel.innerHTML='<div class="weather"><div class="small">Uite ce vreme frumoasă</div><p class="puzzle">Nu este <u>târziu</u> pentru <u>cafea</u>. Nu crezi că ar intra un...</p></div>'+form('Scrie răspunsul aici');
     bind(function(v){
       var r=judge(v,['latte','5togo','5 to go','cincitogo'],['latte','5togo']);
       if(r==='ok'){sGood();show2(norm(v)==='latte'?'A':'B')}
