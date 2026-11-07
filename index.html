@@ -47,6 +47,9 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 .sema img{width:100%;height:100%;object-fit:contain;display:block}
 .dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--accent)}
 .hl{background:var(--sun);color:#2a2140;padding:0 .25em;border-radius:.25em}
+.honkrow{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:16px}
+.clown{width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid var(--accent);flex:none}
+.clown img{width:100%;height:100%;object-fit:cover;display:block}
 .confetti{font-size:2.4rem;text-align:center}
 .clock{display:flex;flex-direction:column;align-items:center;gap:4px;margin:10px 0}
 .clock svg{width:140px;height:140px}
@@ -372,11 +375,20 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
     reset();clearTimeout(bubTimer);
     bubL.textContent='la mulți ani!';bubR.textContent='la mulți ani!';R_DEFAULT='la mulți ani!';
     panel.innerHTML='<div class="confetti">❤️❤️❤️</div><p class="puzzle" style="text-align:center;margin-top:8px">BRAVOOO PISOIUU!</p>'
-      +'<p class="msg" style="text-align:center;margin-top:12px">Te-ai descurcat foarte bine. Sper că măcar puțin te-ai simțit din nou ca un copil.<br><br><b>Te iubesc și la mulți ani din nou!</b></p><div id="afterFinal"></div>';
-    later(function(){
-      var a=document.getElementById('afterFinal');if(!a)return;
-      a.innerHTML='<div class="block"><div style="border:2px solid var(--accent);border-radius:14px;padding:14px 16px;text-align:center;font-weight:700">Din păcate pentru tine, ziua nu s-a terminat. Trebuie să închei această vârstă la înălțime.</div></div>';
-    },20000);
+      +'<p class="msg" style="text-align:center;margin-top:12px">Te-ai descurcat foarte bine! Sper că te-ai simțit bine și, chiar dacă n-am mers în Franța, măcar am fost pe strada Franceză.</p>'
+      +'<div class="honkrow"><div class="clown"><img src="clown.jpg" alt="pisoi clovn"></div><button type="button" id="honk">Honk!</button></div>'
+      +'<div id="afterHonk"></div><div id="afterFinal"></div>';
+    var honked=false,honkAudio=null;
+    document.getElementById('honk').addEventListener('click',function(){
+      try{honkAudio=honkAudio||new Audio('honk.mp3');honkAudio.currentTime=0;honkAudio.volume=1;var p=honkAudio.play();if(p&&p.catch)p.catch(function(){})}catch(e){}
+      if(honked)return;honked=true;
+      var h=document.getElementById('afterHonk');
+      if(h)h.innerHTML='<p class="msg" style="text-align:center;margin-top:14px"><b>Te iubesc și la mulți ani din nou!</b></p>';
+      later(function(){
+        var a=document.getElementById('afterFinal');if(!a)return;
+        a.innerHTML='<div class="block"><div style="border:2px solid var(--accent);border-radius:14px;padding:14px 16px;text-align:center;font-weight:700">Din păcate pentru tine, ziua nu s-a terminat. Trebuie să închei ziua asta pe o notă ÎNALTĂ.</div></div>';
+      },15000);
+    });
   }
 
   show1();
