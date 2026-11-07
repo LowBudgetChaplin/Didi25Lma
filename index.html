@@ -82,8 +82,8 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 <script>
 (function(){
   // ---------- config ----------
-  // Site stays locked until this moment. TEST value now; for the real day use '2026-11-08T06:00:00+02:00'
-  var UNLOCK_AT=Date.parse('2026-11-07T18:00:00+02:00');
+  // Site stays locked until this moment (8 Nov 2026, 06:00 Romania time)
+  var UNLOCK_AT=Date.parse('2026-11-08T06:00:00+02:00');
   var HINT_DELAY_MS=60*1000;          // help button appears 1 minute after the elephant puzzle shows
   var LOC_LINK='https://share.google/zRiiG95XjGqCkkacw';
   var TARGET={lat:44+41/60+45.2/3600,lon:25+30/60+5.5/3600}; // 44°41'45.2"N 25°30'05.5"E
@@ -215,7 +215,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
 
   function showFord(){
     var e=document.getElementById('extra2');if(!e||e.innerHTML)return;
-    e.innerHTML='<p class="msg" style="margin-top:12px"><b>Ok, ești aproape, dar pentru că ai un hint în plus:</b> este o codificare de tipul cuvântului evidențiat.</p>';
+    e.innerHTML='<p class="msg" style="margin-top:12px"><b>Ok, ești foarte aproape, dar uite un hint în plus:</b> este o codificare de tipul cuvântului evidențiat.</p>';
     var w=document.getElementById('semWord');if(w)w.className='hl';
   }
 
@@ -232,7 +232,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   function show4(){
     reset();
     panel.innerHTML='<p class="puzzle">Ok, hai la Kuga atunci și... încotro mai departe?</p>'
-      +'<p class="msg" style="margin-top:12px">Scrie răspunsul de pe vinil:</p>'+form('Răspunsul de pe vinil');
+      +'<p class="msg" style="margin-top:12px">Caută locația cu grijă...</p>'+form('Răspunsul de pe vinil');
     bind(function(v){
       var c=classify(v);
       if(c==='near'){sWrong();fb(NEAR)}
@@ -311,7 +311,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   function showFallback(){
     if(fallbackShown)return;fallbackShown=true;
     var f=document.getElementById('fallback');if(!f)return;
-    f.innerHTML='<div class="block"><p class="msg">Hm, probabil nu e foarte bun semnalul pentru locație aici :/ Dar totuși, dacă tot ai ajuns până acolo, Chopper e curios cât de scump e de hrănit un elefant pe la voi.</p><button type="button" class="alt" id="fbBtn">Îmi pare rău dacă nu ești localizat bine, dar dacă tot mergi până acolo, sunt curios cât de scump este să hrănești un elefant la cât de mare e.</button><div id="fbForm"></div></div>';
+    f.innerHTML='<div class="block"><p class="msg">Hm, probabil nu e foarte bun semnalul pentru locație aici :/ Dar totuși, dacă tot ai ajuns până acolo, Chopper e curios cât de scump e de hrănit un elefant pe la voi.</p><button type="button" class="alt" id="fbBtn">Cât costă o porție, deci?</button><div id="fbForm"></div></div>';
     document.getElementById('fbBtn').addEventListener('click',function(){
       var w=document.getElementById('fbForm');if(w.innerHTML)return;
       w.innerHTML=form('Lei pe porție','p');
