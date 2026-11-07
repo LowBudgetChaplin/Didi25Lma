@@ -129,7 +129,7 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   function sGood(){[523,659,784,1047].forEach(function(f,i){tone(f,i*.09,.25,'triangle',.14)})}
   function sCoin(){tone(988,0,.09,'square',.08);tone(1319,.09,.4,'square',.08)}
   var chopperAudio=null;
-  function playChopper(){try{chopperAudio=chopperAudio||new Audio('chopper.mp3');chopperAudio.currentTime=0;chopperAudio.volume=1;var p=chopperAudio.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
+  function playChopper(cb){var done=false;function fin(){if(done)return;done=true;if(cb)cb()}try{chopperAudio=chopperAudio||new Audio('chopper.mp3');chopperAudio.onended=fin;chopperAudio.currentTime=0;chopperAudio.volume=1;var p=chopperAudio.play();if(p&&p.catch)p.catch(function(){fin()})}catch(e){fin()}}
 
   // ---------- ui plumbing ----------
   var panel=document.getElementById('panel');
@@ -267,10 +267,10 @@ button.alt{background:transparent;color:var(--accent);border:2px solid var(--acc
   }
   function openHint(){
     var a=document.getElementById('hintArea');if(!a||hintShown)return;hintShown=true;
-    a.innerHTML='<div class="block"><p class="msg"><b>Am un prieten care te-ar putea ajuta, cu care te asemeni, și e un medic aproape la fel de bun ca tine. Poți ghici cine e?</b></p>'+form('Numele prietenului','h')+'<div id="ren"></div></div>';
+    a.innerHTML='<div class="block"><p class="msg"><b>Am un prieten care te-ar putea ajuta, cu care te asemeni, și e un medic aproape la fel de bun ca tine. Poți ghici cine e?</b></p>'+form('Numele prietenului','h')+'<div id="ren"></div><div id="chopMsg"></div></div>';
     bind(function(v){
       var n=norm(v);
-      if(n==='chopper'||n==='choper'||near(n,['chopper'])){sGood();playChopper();fb('Chopper! 🦌 Ascultă...','h')}
+      if(n==='chopper'||n==='choper'||near(n,['chopper'])){sGood();fb('Chopper! 🦌 Ascultă...','h');playChopper(function(){var m=document.getElementById('chopMsg');if(m)m.innerHTML='<p class="msg" style="margin-top:12px"><b>Cred că micul tău ajutor are nevoie la rândul lui de ajutor. Pare că s-a răsturnat prin mașină pe undeva...</b></p>';fb('','h')})}
       else if(['homofusan','mofusan','homofuzan','mofuzan'].indexOf(n)>=0){
         homoCount++;sWrong();
         if(homoCount===1)fb('Eu cred că Homofusan vrea să fie atent la drum, dar vezi, poate ascunde el un răspuns la spate.','h');
